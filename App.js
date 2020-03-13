@@ -1,6 +1,5 @@
-
-
-import React from 'react';
+import { Provider } from 'react-redux';
+import React, { Component } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -8,84 +7,35 @@ import {
   View,
   Text,
   StatusBar,
+  TouchableOpacity,
 } from 'react-native';
+import CounterApp from './CounterApp'
+import { createStore } from 'redux';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const intialState = {
+  count: 0
+}
+const reducer = (state = intialState, action) => {
+  switch (action.type) {
+    case 'Increase': return{ count:state.count+1}
+    case 'Decrease': return{ count:state.count-1}
+  }
 
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Hi, </Text>
-              <Text style={styles.sectionDescription}>
-                This is<Text style={styles.highlight}> SDT </Text> here.
-      
-              </Text>
-            </View>
-     
-      
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
-};
+  return state
 
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
+}
+const store = createStore(reducer);
+export default class App extends Component {
 
-export default App;
+  render() {
+
+    return (
+<Provider store={store}>
+
+        <CounterApp />
+
+        </Provider>
+
+    )
+  }
+}
